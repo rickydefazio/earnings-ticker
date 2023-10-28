@@ -25,6 +25,7 @@
     "money",
     "motivation"
   ],
+  "icon": "logo.png",
   "publisher": "RickyDeFazio",
   "activationEvents": [],
   "main": "./dist/extension.js",

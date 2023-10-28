@@ -1,71 +1,26 @@
-# earnings-ticker README
+# Earnings Ticker
 
-Give your motivation a boost with this extension that calculates your real-time earnings based on your annual USD salary and work hours. Input your pay and shift timings, then watch your income accrue in real time throughout your workday.
+Elevate your motivation and seize the day with **Earnings Ticker**, an extension that calculates your real-time earnings based on your annual USD salary and work hours. Simply input your salary and work schedule, and marvel as your income accumulates before your eyes during your workday.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+**Real-Time Earnings Display:** Keep track of your hard-earned money as you work. Your earnings update in real time, providing a constant stream of motivation.
 
-For example if there is an image subfolder under your extension project workspace:
+**Customizable Work Hours:** Specify your daily work start and end times to get the most accurate earnings data tailored to your schedule.
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+**Unobtrusive Yet Accessible:** The extension sits quietly in your status bar, ensuring it doesn't distract you from your main tasks.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-- `myExtension.enable`: Enable/disable this extension.
-- `myExtension.thing`: Set to `blah` to do something.
+No additional dependencies needed.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+- Currently only supports USD currency.
+- Does not account for odd working hours.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1 (MVP)
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-- [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-- Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-- Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-- Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-- [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-- [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- Initial release featuring real-time earnings tracking and customizable work hours.

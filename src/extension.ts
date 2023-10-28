@@ -4,7 +4,7 @@ enum Commands {
   startEarningsTicker = 'extension.startEarningsTicker',
   cancelEarningsTicker = 'extension.cancelEarningsTicker'
 }
-type UserInputsType = [string, string, string];
+type UserInputs = [string, string, string];
 
 class EarningsTicker {
   private annualSalary: number = 0;
@@ -110,7 +110,7 @@ class EarningsTicker {
     this.deactivationTimeoutSet = false;
   }
 
-  private async getUserInputs(): Promise<UserInputsType | null> {
+  private async getUserInputs(): Promise<UserInputs | null> {
     const salaryInput = await vscode.window.showInputBox({
       prompt: 'Enter your annual USD salary (NUMBERS ONLY):'
     });
@@ -179,9 +179,7 @@ class EarningsTicker {
     return [hour24, parseInt(minute)];
   }
 
-  private async validateAndSetInputs(
-    userInputs: UserInputsType
-  ): Promise<boolean> {
+  private async validateAndSetInputs(userInputs: UserInputs): Promise<boolean> {
     const [salaryInput, startTimeInput, endTimeInput] = userInputs;
 
     const parsedSalary = this.parseSalary(salaryInput);
@@ -235,7 +233,7 @@ class EarningsTicker {
         vscode.StatusBarAlignment.Right,
         100
       );
-      this.statusBar.text = '$0.00';
+      this.statusBar.text = '';
       this.statusBar.color = '#39FF14';
       this.statusBar.show();
     }
