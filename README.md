@@ -24,3 +24,7 @@ No additional dependencies needed.
 ### 0.0.1 (MVP)
 
 - Initial release featuring real-time earnings tracking and customizable work hours.
+
+### 0.0.2 (Re-Release MVP)
+
+- Nothing to see here.
