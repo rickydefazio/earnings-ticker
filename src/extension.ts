@@ -164,13 +164,16 @@ class EarningsTicker {
   private convertTo24Hour(time: string): [number, number] {
     const [hour, minute] = time.split(/[:\s]/, 2);
     let meridian = time.match(/AM|PM|am|pm/gi);
-    let hour24 =
-      meridian && meridian[0].toUpperCase() === 'PM' && parseInt(hour) < 12
-        ? parseInt(hour) + 12
-        : parseInt(hour);
+    let hour24 = parseInt(hour);
 
-    if (hour === '12') {
-      hour24 = meridian && meridian[0].toUpperCase() === 'AM' ? 0 : 12;
+    // Convert PM hours to 24-hour format, except for 12 PM
+    if (meridian && meridian[0].toUpperCase() === 'PM' && hour !== '12') {
+      hour24 += 12;
+    }
+
+    // Convert 12 AM to 0
+    if (hour === '12' && meridian && meridian[0].toUpperCase() === 'AM') {
+      hour24 = 0;
     }
 
     return [hour24, parseInt(minute)];
@@ -207,9 +210,10 @@ class EarningsTicker {
     this.startTime.setHours(startHour, startMinute, 0, 0);
     this.endTime.setHours(endHour, endMinute, 0, 0);
 
+    // Ensure the start time is before the end time
     if (this.endTime <= this.startTime) {
-      // Assume the end time is on the following day
-      this.endTime.setDate(this.endTime.getDate() + 1);
+      vscode.window.showErrorMessage('Start time must be before the end time.');
+      return false;
     }
 
     try {
@@ -255,9 +259,24 @@ class EarningsTicker {
           this.deactivationTimeoutSet = true;
           this.workdayActive = false;
 
+          this.statusBar.text = `Congrats! You Earned $${dailySalary.toFixed(
+            2
+          )}`;
+
           setTimeout(() => {
             this.deactivate();
-          }, 15 * 60 * 1000); // 15 minutes in milliseconds
+          }, 10 * 60 * 1000); // 10 minutes in milliseconds
+
+          if (this.intervalId) {
+            clearInterval(this.intervalId);
+          }
+        } else {
+          this.statusBar.text = `Congrats! You Earned $${dailySalary.toFixed(
+            2
+          )}`;
+          setTimeout(() => {
+            this.deactivate();
+          }, 2 * 60 * 5000); // 2 minutes in milliseconds
 
           if (this.intervalId) {
             clearInterval(this.intervalId);
