@@ -18,6 +18,12 @@ No additional dependencies needed.
 
 - Currently only supports USD currency.
 - Does not account for odd working hours.
+- Earnings accumulation does not persist across workspaces.
+
+## To-Do
+- [ ] Make currency adjustable.
+- [ ] Make earnings accumulation persist across workspaces.
+- [ ] Add configuration settings.
 
 ## Release Notes
 
