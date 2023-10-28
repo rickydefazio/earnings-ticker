@@ -9,6 +9,23 @@
   "categories": [
     "Other"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rickydefazio/earnings-ticker.git"
+  },
+  "keywords": [
+    "tracking",
+    "salary",
+    "earnings",
+    "work-hours",
+    "financial",
+    "income",
+    "ticker",
+    "cash",
+    "money",
+    "motivation"
+  ],
+  "publisher": "RickyDeFazio",
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
@@ -31,18 +48,15 @@
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "lint": "eslint src --ext ts"
   },
   "devDependencies": {
     "@types/vscode": "^1.83.0",
-    "@types/mocha": "^10.0.2",
     "@types/node": "18.x",
     "@typescript-eslint/eslint-plugin": "^6.7.3",
     "@typescript-eslint/parser": "^6.7.3",
     "eslint": "^8.50.0",
     "glob": "^10.3.3",
-    "mocha": "^10.2.0",
     "typescript": "^5.2.2",
     "ts-loader": "^9.4.4",
     "webpack": "^5.88.2",
