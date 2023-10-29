@@ -1,4 +1,4 @@
-# Earnings Ticker (VS Code Extension)
+# Earnings Ticker
 
 Elevate your motivation and seize the day with **Earnings Ticker**, an extension that calculates your real-time earnings based on your annual USD salary and work hours. Simply input your salary and work schedule, and marvel as your income accumulates before your eyes during your workday.
 
