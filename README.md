@@ -21,6 +21,7 @@ No additional dependencies needed.
 - Earnings accumulation does not persist across workspaces.
 
 ## To-Do
+
 - [ ] Make currency adjustable.
 - [ ] Make earnings accumulation persist across workspaces.
 - [ ] Add configuration settings.
@@ -34,3 +35,7 @@ No additional dependencies needed.
 ### 0.0.2 (Re-Release MVP)
 
 - Nothing to see here.
+
+### 0.0.3
+
+- Improve the logo.
