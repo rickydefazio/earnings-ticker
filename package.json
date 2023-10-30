@@ -39,7 +39,22 @@
         "command": "extension.cancelEarningsTicker",
         "title": "Cancel Earnings Ticker"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Earnings Ticker",
+      "properties": {
+        "earningsTicker.numberOfAnnualWorkdays": {
+          "type": "number",
+          "default": 261,
+          "description": "Number of workdays in a year."
+        },
+        "earningsTicker.numberOfDaysOffWork": {
+          "type": "number",
+          "default": 26,
+          "description": "Number of days taken off from work."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "pnpm run package",

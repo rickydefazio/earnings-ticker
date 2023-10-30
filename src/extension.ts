@@ -14,11 +14,27 @@ class EarningsTicker {
   private statusBar: vscode.StatusBarItem | null = null;
   private workdayActive = false;
   private deactivationTimeoutSet = false;
-  private approximateAnnualWorkDays = 261;
+  private numberOfAnnualWorkdays: number = vscode.workspace
+    .getConfiguration('earningsTicker')
+    .get<number>('numberOfAnnualWorkdays', 261);
+  private numberOfDaysOffWork: number = vscode.workspace
+    .getConfiguration('earningsTicker')
+    .get<number>('numberOfDaysOffWork', 26);
+  private daysActivelyWorking: number =
+    this.numberOfAnnualWorkdays - this.numberOfDaysOffWork;
 
   constructor(private context: vscode.ExtensionContext) {}
 
   public activate() {
+    vscode.workspace.onDidChangeConfiguration(e => {
+      if (
+        e.affectsConfiguration('earningsTicker.numberOfAnnualWorkdays') ||
+        e.affectsConfiguration('earningsTicker.numberOfDaysOffWork')
+      ) {
+        this.reInitialize();
+      }
+    });
+
     this.loadState();
 
     this.context.subscriptions.push(
@@ -47,6 +63,13 @@ class EarningsTicker {
     this.resetState();
   }
 
+  private reInitialize() {
+    this.updateConfigSettings();
+    this.deactivate();
+    this.loadState();
+    this.startEarningsTicker();
+  }
+
   private async startEarningsTicker() {
     const userInputs = await this.getUserInputs();
 
@@ -55,7 +78,7 @@ class EarningsTicker {
     } else if (!(await this.validateAndSetInputs(userInputs))) {
       this.deactivate();
     } else {
-      this.updateStatusBar(this.annualSalary / this.approximateAnnualWorkDays);
+      this.updateStatusBar(this.annualSalary / this.daysActivelyWorking);
     }
   }
 
@@ -108,6 +131,17 @@ class EarningsTicker {
     this.statusBar = null;
     this.workdayActive = false;
     this.deactivationTimeoutSet = false;
+  }
+
+  private updateConfigSettings() {
+    this.numberOfAnnualWorkdays = vscode.workspace
+      .getConfiguration('earningsTicker')
+      .get<number>('numberOfAnnualWorkdays', 261);
+    this.numberOfDaysOffWork = vscode.workspace
+      .getConfiguration('earningsTicker')
+      .get<number>('numberOfDaysOffWork', 26);
+    this.daysActivelyWorking =
+      this.numberOfAnnualWorkdays - this.numberOfDaysOffWork;
   }
 
   private async getUserInputs(): Promise<UserInputs | null> {

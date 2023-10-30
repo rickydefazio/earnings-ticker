@@ -14,6 +14,14 @@ Elevate your motivation and seize the day with **Earnings Ticker**, an extension
 
 No additional dependencies needed.
 
+## Extension Settings
+
+This extension contributes the following settings:
+
+- `earningsTicker.numberOfAnnualWorkdays`: Configure the number of workdays in your calendar year.
+
+- `earningsTicker.numberOfDaysOffWork`: Configure the number of days taken off from work.
+
 ## Known Issues
 
 - Currently only supports USD currency.
