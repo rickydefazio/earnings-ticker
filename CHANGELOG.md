@@ -21,3 +21,9 @@ All notable changes to the "earnings-ticker" extension will be documented in thi
 ### Added:
 
 - Configuration settings
+
+## 0.0.5 - 30 Oct 2023
+
+### Added:
+
+- Additional information to README file

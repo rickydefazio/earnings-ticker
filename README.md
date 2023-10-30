@@ -10,13 +10,18 @@ Elevate your motivation and seize the day with **Earnings Ticker**, an extension
 
 **Unobtrusive Yet Accessible:** The extension sits quietly in your status bar, ensuring it doesn't distract you from your main tasks.
 
-## Requirements
+## How-To
 
-No additional dependencies needed.
+1. Open the **Command Palette** on Visual Studio Code.
+2. Enter `Start Earnings Ticker` and follow the prompts.
+3. Enter `Cancel Earnings Ticker` to cancel.
 
-## Extension Settings
+## Default Settings
 
-This extension contributes the following settings:
+- The extension assumes 261 calendar workdays (removing all weekends).
+- The extension assumes 26 days off to account for holidays, sick days, and vacation days.
+
+## Customizable Settings
 
 - `earningsTicker.numberOfAnnualWorkdays`: Configure the number of workdays in your calendar year.
 
@@ -51,3 +56,7 @@ This extension contributes the following settings:
 ### 0.0.4
 
 - Added configuration settings to adjust how many days the user works, and how many days off they expect to take in the year.
+
+### 0.0.5
+
+- Add additional information to README.
