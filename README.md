@@ -47,3 +47,7 @@ This extension contributes the following settings:
 ### 0.0.3
 
 - Improve the logo.
+
+### 0.0.4
+
+- Added configuration settings to adjust how many days the user works, and how many days off they expect to take in the year.
