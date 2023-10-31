@@ -2,7 +2,7 @@
   "name": "earnings-ticker",
   "displayName": "Earnings Ticker",
   "description": "A real-time accumulation of your earned wages while you code at work.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "engines": {
     "vscode": "^1.83.0"
   },
@@ -57,14 +57,16 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "pnpm run package",
+    "vscode:prepublish": "pnpm run vscode:package",
     "compile": "webpack",
     "watch": "webpack --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
+    "vscode:package": "webpack --mode production --devtool hidden-source-map",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
-    "lint": "eslint src --ext ts"
+    "lint": "eslint src --ext ts",
+    "package": "pnpm vsce package --no-dependencies",
+    "publish": "pnpm vsce publish"
   },
   "devDependencies": {
     "@types/vscode": "^1.83.0",

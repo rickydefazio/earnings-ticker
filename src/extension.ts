@@ -51,6 +51,7 @@ class EarningsTicker {
   }
 
   public deactivate() {
+    console.log('DEACTIVATED');
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
@@ -61,6 +62,10 @@ class EarningsTicker {
     }
 
     this.resetState();
+
+    this.context.subscriptions.forEach(disposable => disposable.dispose());
+
+    vscode.window.showInformationMessage('Earnings Ticker has been canceled.');
   }
 
   private reInitialize() {
@@ -116,9 +121,7 @@ class EarningsTicker {
       ]);
     } catch (error: unknown) {
       if (error instanceof Error) {
-        vscode.window.showErrorMessage(
-          'Failed to update state: ' + error.message
-        );
+        this.showErrorMessage(`Failed to update state: ${error.message}`);
       }
     }
   }
@@ -145,30 +148,27 @@ class EarningsTicker {
   }
 
   private async getUserInputs(): Promise<UserInputs | null> {
-    const salaryInput = await vscode.window.showInputBox({
-      prompt: 'Enter your annual USD salary (NUMBERS ONLY):'
-    });
+    const salaryInput = await this.createPrompt(
+      'Enter your annual USD salary (NUMBERS ONLY):'
+    );
 
-    if (salaryInput === undefined) {
-      this.deactivate();
+    if (salaryInput === undefined || salaryInput === '') {
       return null;
     }
 
-    const startTimeInput = await vscode.window.showInputBox({
-      prompt: 'Enter your shift start time (HH:MM AM/PM):'
-    });
+    const startTimeInput = await this.createPrompt(
+      'Enter your shift start time (HH:MM AM/PM):'
+    );
 
-    if (startTimeInput === undefined) {
-      this.deactivate();
+    if (startTimeInput === undefined || startTimeInput === '') {
       return null;
     }
 
-    const endTimeInput = await vscode.window.showInputBox({
-      prompt: 'Enter your shift end time (HH:MM AM/PM):'
-    });
+    const endTimeInput = await this.createPrompt(
+      'Enter your shift end time (HH:MM AM/PM):'
+    );
 
-    if (endTimeInput === undefined) {
-      this.deactivate();
+    if (endTimeInput === undefined || endTimeInput === '') {
       return null;
     }
 
@@ -179,10 +179,14 @@ class EarningsTicker {
     }
   }
 
+  private async createPrompt(prompt: string) {
+    return await vscode.window.showInputBox({ prompt });
+  }
+
   private parseSalary(salaryInput: string): number | null {
     const parsedSalary = parseFloat(salaryInput);
     if (parsedSalary <= 0 || !Boolean(parsedSalary)) {
-      vscode.window.showErrorMessage(
+      this.showErrorMessage(
         'Invalid salary amount. Please enter a positive number.'
       );
       return null;
@@ -226,7 +230,7 @@ class EarningsTicker {
       !this.validateTimeFormat(startTimeInput) ||
       !this.validateTimeFormat(endTimeInput)
     ) {
-      vscode.window.showErrorMessage('Invalid time format. Use HH:MM AM/PM.');
+      this.showErrorMessage('Invalid time format. Use HH:MM AM/PM.');
       return false;
     }
 
@@ -244,7 +248,7 @@ class EarningsTicker {
 
     // Ensure the start time is before the end time
     if (this.endTime <= this.startTime) {
-      vscode.window.showErrorMessage('Start time must be before the end time.');
+      this.showErrorMessage('Start time must be before the end time.');
       return false;
     }
 
@@ -253,9 +257,9 @@ class EarningsTicker {
       return true;
     } catch (error: unknown) {
       if (error instanceof Error) {
-        vscode.window.showErrorMessage(`An error occurred. ${error.message}`);
+        this.showErrorMessage(`An error occurred. ${error.message}`);
       } else {
-        vscode.window.showErrorMessage('An unknown error occurred.');
+        this.showErrorMessage('An unknown error occurred.');
       }
       return false;
     }
@@ -316,6 +320,10 @@ class EarningsTicker {
         }
       }
     }, 1000);
+  }
+
+  private showErrorMessage(message: string) {
+    vscode.window.showErrorMessage(message);
   }
 }
 

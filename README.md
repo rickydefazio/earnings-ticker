@@ -60,3 +60,7 @@ Elevate your motivation and seize the day with **Earnings Ticker**, an extension
 ### 0.0.5
 
 - Add additional information to README.
+
+### 0.0.6
+
+- Small refactor.
