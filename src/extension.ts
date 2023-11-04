@@ -6,7 +6,7 @@ enum Commands {
 }
 type UserInputs = [string, string, string];
 
-class EarningsTicker {
+export default class EarningsTicker {
   private annualSalary: number = 0;
   private startTime: Date | null = null;
   private endTime: Date | null = null;
@@ -51,7 +51,6 @@ class EarningsTicker {
   }
 
   public deactivate() {
-    console.log('DEACTIVATED');
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }

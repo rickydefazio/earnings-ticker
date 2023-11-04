@@ -5,9 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 devDependencies:
-  '@types/jest':
-    specifier: ^29.5.7
-    version: 29.5.7
+  '@types/mocha':
+    specifier: ^10.0.3
+    version: 10.0.3
   '@types/node':
     specifier: 18.x
     version: 18.18.7
@@ -29,9 +29,6 @@ devDependencies:
   glob:
     specifier: ^10.3.10
     version: 10.3.10
-  jest:
-    specifier: ^29.7.0
-    version: 29.7.0(@types/node@18.18.7)
   mocha:
     specifier: ^10.2.0
     version: 10.2.0
@@ -854,15 +851,12 @@ packages:
       '@types/istanbul-lib-report': 3.0.2
     dev: true
 
-  /@types/jest@29.5.7:
-    resolution: {integrity: sha512-HLyetab6KVPSiF+7pFcUyMeLsx25LDNDemw9mGsJBkai/oouwrjTycocSDYopMEwFhN2Y4s9oPyOCZNofgSt2g==}
-    dependencies:
-      expect: 29.7.0
-      pretty-format: 29.7.0
-    dev: true
-
   /@types/json-schema@7.0.14:
     resolution: {integrity: sha512-U3PUjAudAdJBeC2pgN8uTIKgxrb4nlDF3SF0++EldXQvQBGkpFZMSnwQiIoDU77tv45VgNkl/L4ouD+rEomujw==}
+    dev: true
+
+  /@types/mocha@10.0.3:
+    resolution: {integrity: sha512-RsOPImTriV/OE4A9qKjMtk2MnXiuLLbcO3nCXK+kvq4nr0iMfFgpjaX3MPLb6f7+EL1FGSelYvuJMV6REH+ZPQ==}
     dev: true
 
   /@types/node@18.18.7:
