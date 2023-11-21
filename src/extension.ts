@@ -4,9 +4,10 @@ enum Commands {
   startEarningsTicker = 'extension.startEarningsTicker',
   cancelEarningsTicker = 'extension.cancelEarningsTicker'
 }
-type UserInputs = [string, string, string];
+type UserInputs = string[];
 
 export default class EarningsTicker {
+  private currency: string = 'USD';
   private annualSalary: number = 0;
   private startTime: Date | null = null;
   private endTime: Date | null = null;
@@ -61,8 +62,6 @@ export default class EarningsTicker {
     }
 
     this.resetState();
-
-    this.context.subscriptions.forEach(disposable => disposable.dispose());
 
     vscode.window.showInformationMessage('Earnings Ticker has been canceled.');
   }
@@ -146,9 +145,24 @@ export default class EarningsTicker {
       this.numberOfAnnualWorkdays - this.numberOfDaysOffWork;
   }
 
+  private formatCurrency(value: number, currency = 'USD') {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency
+    }).format(value);
+  }
+
   private async getUserInputs(): Promise<UserInputs | null> {
+    const currencyInput = await this.createPrompt(
+      'Enter your desired currency (e.g., USD, EUR, GBP)'
+    );
+
+    if (currencyInput === undefined || currencyInput === '') {
+      return null;
+    }
+
     const salaryInput = await this.createPrompt(
-      'Enter your annual USD salary (NUMBERS ONLY):'
+      'Enter your annual salary (NUMBERS ONLY):'
     );
 
     if (salaryInput === undefined || salaryInput === '') {
@@ -172,7 +186,7 @@ export default class EarningsTicker {
     }
 
     if (salaryInput && startTimeInput && endTimeInput) {
-      return [salaryInput, startTimeInput, endTimeInput];
+      return [currencyInput, salaryInput, startTimeInput, endTimeInput];
     } else {
       return null;
     }
@@ -217,7 +231,8 @@ export default class EarningsTicker {
   }
 
   private async validateAndSetInputs(userInputs: UserInputs): Promise<boolean> {
-    const [salaryInput, startTimeInput, endTimeInput] = userInputs;
+    const [currencyInput, salaryInput, startTimeInput, endTimeInput] =
+      userInputs;
 
     const parsedSalary = this.parseSalary(salaryInput);
 
@@ -234,6 +249,7 @@ export default class EarningsTicker {
     }
 
     this.annualSalary = parsedSalary;
+    this.currency = currencyInput;
 
     const currentDate = new Date();
     this.startTime = new Date(currentDate);
@@ -289,13 +305,14 @@ export default class EarningsTicker {
           const totalWorkMs = this.endTime.getTime() - this.startTime.getTime();
           const earned = (elapsedMs / totalWorkMs) * dailySalary;
 
-          this.statusBar.text = `$${earned.toFixed(2)}`;
+          this.statusBar.text = this.formatCurrency(earned, this.currency);
         } else if (this.workdayActive && !this.deactivationTimeoutSet) {
           this.deactivationTimeoutSet = true;
           this.workdayActive = false;
 
-          this.statusBar.text = `Congrats! You Earned $${dailySalary.toFixed(
-            2
+          this.statusBar.text = `Congrats! You Earned ${this.formatCurrency(
+            dailySalary,
+            this.currency
           )}`;
 
           setTimeout(() => {
@@ -306,8 +323,9 @@ export default class EarningsTicker {
             clearInterval(this.intervalId);
           }
         } else {
-          this.statusBar.text = `Congrats! You Earned $${dailySalary.toFixed(
-            2
+          this.statusBar.text = `Congrats! You Earned ${this.formatCurrency(
+            dailySalary,
+            this.currency
           )}`;
           setTimeout(() => {
             this.deactivate();

@@ -43,6 +43,11 @@
     "configuration": {
       "title": "Earnings Ticker",
       "properties": {
+        "earningsTicker.currency": {
+          "type": "string",
+          "default": "USD",
+          "description": "Your preferred currency (e.g., USD, EUR, GBP)"
+        },
         "earningsTicker.numberOfAnnualWorkdays": {
           "type": "number",
           "default": 261,

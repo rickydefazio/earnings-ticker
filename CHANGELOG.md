@@ -31,3 +31,9 @@ All notable changes to the "earnings-ticker" extension will be documented in thi
 ## 0.0.5 - 31 Oct 2023
 
 - Small refactor
+
+## 0.0.6 - 20 Nov 2023
+
+### Added:
+
+- Support for foreign currencies outside of the US! 🎉
