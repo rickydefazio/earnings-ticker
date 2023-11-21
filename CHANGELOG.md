@@ -32,7 +32,7 @@ All notable changes to the "earnings-ticker" extension will be documented in thi
 
 - Small refactor
 
-## 0.0.6 - 20 Nov 2023
+## 0.0.7 - 20 Nov 2023
 
 ### Added:
 
