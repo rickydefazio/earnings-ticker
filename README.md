@@ -29,12 +29,9 @@ Elevate your motivation and seize the day with **Earnings Ticker**, an extension
 
 ## Known Issues
 
-- Currently only supports USD currency.
 - Does not account for odd working hours.
 - Earnings accumulation does not persist across workspaces.
 
 ## To-Do
 
-- [ ] Make currency adjustable.
 - [ ] Make earnings accumulation persist across workspaces.
-- [x] Add configuration settings.
