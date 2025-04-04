@@ -51,7 +51,7 @@ export default class EarningsTicker {
     );
   }
 
-  public deactivate() {
+  public async deactivate() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
@@ -61,31 +61,75 @@ export default class EarningsTicker {
       this.statusBar.dispose();
     }
 
-    this.resetState();
+    await this.resetState();
 
     vscode.window.showInformationMessage('Earnings Ticker has been canceled.');
   }
 
-  private reInitialize() {
+  private async reInitialize() {
     this.updateConfigSettings();
-    this.deactivate();
+    await this.deactivate();
     this.loadState();
-    this.startEarningsTicker();
+    await this.startEarningsTicker();
   }
 
   private async startEarningsTicker() {
+    // Check if we already have valid state data from another workspace
+    const isActive = this.context.globalState.get<boolean>('isActive', false);
+    const storedSalary = this.context.globalState.get<number>(
+      'annualSalary',
+      0
+    );
+    const hasStoredStartTime = this.context.globalState.get<string>(
+      'startTime',
+      ''
+    );
+    const hasStoredEndTime = this.context.globalState.get<string>(
+      'endTime',
+      ''
+    );
+
+    // If we have valid data already stored, ask if user wants to reuse it
+    if (
+      isActive &&
+      storedSalary > 0 &&
+      hasStoredStartTime &&
+      hasStoredEndTime
+    ) {
+      const decision = await vscode.window.showInformationMessage(
+        'You have an active earnings ticker configuration. Would you like to reuse it?',
+        'Reuse',
+        'Reset'
+      );
+
+      if (decision === 'Reuse') {
+        this.loadState();
+        this.updateStatusBar(this.annualSalary / this.daysActivelyWorking);
+        return;
+      }
+    }
+
+    // Get new inputs if we don't have data or user wants to reset
     const userInputs = await this.getUserInputs();
 
     if (!userInputs) {
-      this.deactivate();
+      await this.deactivate();
     } else if (!(await this.validateAndSetInputs(userInputs))) {
-      this.deactivate();
+      await this.deactivate();
     } else {
       this.updateStatusBar(this.annualSalary / this.daysActivelyWorking);
     }
   }
 
   private loadState() {
+    // Check if ticker is active first
+    const isActive = this.context.globalState.get<boolean>('isActive', false);
+
+    if (!isActive) {
+      // If not active, don't load earnings values
+      return;
+    }
+
     const storedSalary = this.context.globalState.get<number>(
       'annualSalary',
       0
@@ -93,17 +137,28 @@ export default class EarningsTicker {
 
     const storedStartTime = this.context.globalState.get<string>(
       'startTime',
-      new Date().toISOString()
+      ''
     );
 
-    const storedEndTime = this.context.globalState.get<string>(
-      'endTime',
-      new Date().toISOString()
-    );
+    const storedEndTime = this.context.globalState.get<string>('endTime', '');
 
-    this.annualSalary = storedSalary;
-    this.startTime = new Date(storedStartTime);
-    this.endTime = new Date(storedEndTime);
+    // Only set values if they exist
+    if (storedSalary) {
+      this.annualSalary = storedSalary;
+    }
+
+    if (storedStartTime) {
+      this.startTime = new Date(storedStartTime);
+    }
+
+    if (storedEndTime) {
+      this.endTime = new Date(storedEndTime);
+    }
+
+    // If we have valid data, resume the ticker
+    if (this.annualSalary > 0 && this.startTime && this.endTime) {
+      this.updateStatusBar(this.annualSalary / this.daysActivelyWorking);
+    }
   }
 
   private async updateState(
@@ -115,7 +170,8 @@ export default class EarningsTicker {
       await Promise.all([
         this.context.globalState.update('annualSalary', annualSalary),
         this.context.globalState.update('startTime', startTime?.toISOString()),
-        this.context.globalState.update('endTime', endTime?.toISOString())
+        this.context.globalState.update('endTime', endTime?.toISOString()),
+        this.context.globalState.update('isActive', true)
       ]);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -124,7 +180,8 @@ export default class EarningsTicker {
     }
   }
 
-  private resetState() {
+  private async resetState() {
+    // Reset memory variables
     this.annualSalary = 0;
     this.startTime = null;
     this.endTime = null;
@@ -132,6 +189,10 @@ export default class EarningsTicker {
     this.statusBar = null;
     this.workdayActive = false;
     this.deactivationTimeoutSet = false;
+
+    // Update global state to indicate the ticker is inactive
+    await this.context.globalState.update('isActive', false);
+    // We don't clear the other values so they can be restored if reactivated
   }
 
   private updateConfigSettings() {
@@ -351,6 +412,6 @@ export function activate(context: vscode.ExtensionContext) {
   ticker.activate();
 }
 
-export function deactivate() {
-  ticker.deactivate();
+export async function deactivate() {
+  await ticker.deactivate();
 }

@@ -30,8 +30,3 @@ Elevate your motivation and seize the day with **Earnings Ticker**, an extension
 ## Known Issues
 
 - Does not account for odd working hours.
-- Earnings accumulation does not persist across workspaces.
-
-## To-Do
-
-- [ ] Make earnings accumulation persist across workspaces.
